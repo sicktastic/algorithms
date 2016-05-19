@@ -94,3 +94,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Addition by Anthony
+localization/.idea/*.xml
