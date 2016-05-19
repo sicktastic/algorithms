@@ -96,4 +96,9 @@ Temporary Items
 .apdisk
 
 # Addition by Anthony
-*/localization/.idea/*.xml
+localization/.idea/*
+localization/.idea/workspace.xml
+localization/.idea/tasks.xml
+localization/.idea/dictionaries
+localization/.idea/vcs.xml
+.idea/jsLibraryMappings.xml
