@@ -96,6 +96,7 @@ Temporary Items
 .apdisk
 
 # Addition by Anthony
+*/.idea/*
 localization/.idea/*
 localization/.idea/workspace.xml
 localization/.idea/tasks.xml
