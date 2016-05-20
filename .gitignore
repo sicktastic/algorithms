@@ -96,10 +96,14 @@ Temporary Items
 .apdisk
 
 # Addition by Anthony
-*/.idea/*
 localization/.idea/*
 localization/.idea/workspace.xml
 localization/.idea/tasks.xml
 localization/.idea/dictionaries
 localization/.idea/vcs.xml
+bayes_rule/.idea/*
+bayes_rule/.idea/workspace.xml
+bayes_rule/.idea/tasks.xml
+bayes_rule/.idea/dictionaries
+bayes_rule/.idea/vcs.xml
 .idea/jsLibraryMappings.xml

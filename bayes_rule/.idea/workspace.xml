@@ -106,7 +106,7 @@
         <entry file="file://$PROJECT_DIR$/calculate_total_probability.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="75">
-              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+              <caret line="3" column="22" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -612,7 +612,7 @@
     <entry file="file://$PROJECT_DIR$/calculate_total_probability.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
-          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+          <caret line="3" column="22" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="22" />
           <folding />
         </state>
       </provider>
