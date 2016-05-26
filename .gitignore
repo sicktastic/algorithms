@@ -96,6 +96,7 @@ Temporary Items
 .apdisk
 
 # Addition by Anthony
+.idea/jsLibraryMappings.xml
 localization/.idea/*
 localization/.idea/workspace.xml
 localization/.idea/tasks.xml
@@ -106,4 +107,8 @@ bayes_rule/.idea/workspace.xml
 bayes_rule/.idea/tasks.xml
 bayes_rule/.idea/dictionaries
 bayes_rule/.idea/vcs.xml
-.idea/jsLibraryMappings.xml
+kalman_filtering/.idea/*
+kalman_filtering/.idea/workspace.xml
+kalman_filtering/.idea/tasks.xml
+kalman_filtering/.idea/dictionaries
+kalman_filtering/.idea/vcs.xml
