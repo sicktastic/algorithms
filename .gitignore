@@ -97,6 +97,11 @@ Temporary Items
 
 # Addition by Anthony
 .idea/jsLibraryMappings.xml
+*/.idea/*
+*/.idea/workspace.xml
+*/.idea/tasks.xml
+*/.idea/dictionaries
+*/.idea/vcs.xml
 localization/.idea/*
 localization/.idea/workspace.xml
 localization/.idea/tasks.xml
