@@ -91,8 +91,16 @@ class robot:
     #   obtains bearings from positions
     #
 
-    def sense(self):  # do not change the name of this function
+    def sense(self, add_noise = 1):  # do not change the name of this function
         Z = []
+        for i in range(len(landmarks)):
+            bearing = atan2(landmarks[i][0] - self.y,
+                            landmarks[i][1] - self.x) - self.orientation
+            if add_noise:
+                bearing += random.gauss(0.0, self.bearing_noise)
+            bearing %= 2.0 * pi
+            Z.append(bearing)
+
 
         # ENTER CODE HERE
         # HINT: You will probably need to use the function atan2()
@@ -115,17 +123,17 @@ class robot:
 ## 1) The following code should print the list [6.004885648174475, 3.7295952571373605, 1.9295669970654687, 0.8519663271732721]
 ##
 ##
-##length = 20.
-##bearing_noise  = 0.0
-##steering_noise = 0.0
-##distance_noise = 0.0
-##
-##myrobot = robot(length)
-##myrobot.set(30.0, 20.0, 0.0)
-##myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
-##
-##print 'Robot:        ', myrobot
-##print 'Measurements: ', myrobot.sense()
+length = 20.
+bearing_noise  = 0.0
+steering_noise = 0.0
+distance_noise = 0.0
+
+myrobot = robot(length)
+myrobot.set(30.0, 20.0, 0.0)
+myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
+
+print 'Robot:        ', myrobot
+print 'Measurements: ', myrobot.sense()
 ##
 
 ## IMPORTANT: You may uncomment the test cases below to test your code.
