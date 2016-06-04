@@ -93,9 +93,51 @@ class robot:
     #   move along a section of a circular path according to motion
     #
 
-    def move(self, motion):  # Do not change the name of this function
+    def move(self, motion, tolerance = 0.0001):  # Do not change the name of this function
 
         # ADD CODE HERE
+        steering = motion[0]
+        distance = motion[1]
+
+        if abs(steering) > max_steering_angle:
+            raise ValueError, 'Exceeding max steering angle'
+
+        if distance < 0.0:
+            raise ValueError, 'Moving backwards is not valid'
+
+        # make a new copy
+        result = robot()
+        result.length = self.length
+        result.bearing_noice = self.bearing_noise
+        result.steering_noise = self.steering_noise
+        result.distance_noise = self.distance_noise
+
+        # apply noise
+        steering2 = random.gauss(steering, self.steering_noise)
+        distance2 = random.gauss(distance, self.distance_noise)
+
+        # Execut motion
+
+        turn = tan(steering2) * distance2 / result.length
+
+        if abs(turn) < tolerance:
+
+            # approximate by straight line motion
+
+            result.x = self.x + (distance2 * cos(self.orientation))
+            result.y = self.y + (distance2 * sin(self.orientation))
+            result.orientation = (self.orientation + turn) % (2.0 * pi)
+
+        else:
+
+            # approximate bicycle model for motion
+
+            radius = distance2 / turn
+            cx = self.x - (sin(self.orientation) * radius)
+            cy = self.y + (cos(self.orientation) * radius)
+            result.orientation = (self.orientation + turn) % (2.0 * pi)
+            result.x = cx + (sin(result.orientation) * radius)
+            result.y = cy - (cos(result.orientation) * radius)
 
         return result  # make sure your move function returns an instance
         # of the robot class with the correct coordinates.
@@ -117,23 +159,23 @@ class robot:
 ##       Robot:     [x=39.034 y=7.1270 orient=0.2886]
 ##
 ##
-##length = 20.
-##bearing_noise  = 0.0
-##steering_noise = 0.0
-##distance_noise = 0.0
-##
-##myrobot = robot(length)
-##myrobot.set(0.0, 0.0, 0.0)
-##myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
-##
-##motions = [[0.0, 10.0], [pi / 6.0, 10], [0.0, 20.0]]
-##
-##T = len(motions)
-##
-##print 'Robot:    ', myrobot
-##for t in range(T):
-##    myrobot = myrobot.move(motions[t])
-##    print 'Robot:    ', myrobot
+length = 20.
+bearing_noise  = 0.0
+steering_noise = 0.0
+distance_noise = 0.0
+
+myrobot = robot(length)
+myrobot.set(0.0, 0.0, 0.0)
+myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
+
+motions = [[0.0, 10.0], [pi / 6.0, 10], [0.0, 20.0]]
+
+T = len(motions)
+
+print 'Robot:    ', myrobot
+for t in range(T):
+   myrobot = myrobot.move(motions[t])
+   print 'Robot:    ', myrobot
 ##
 ##
 
