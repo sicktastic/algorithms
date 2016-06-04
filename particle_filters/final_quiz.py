@@ -125,26 +125,59 @@ class robot:
         return '[x=%.6s y=%.6s orient=%.6s]' % (str(self.x), str(self.y),
                                                 str(self.orientation))
 
-        ############# ONLY ADD/MODIFY CODE BELOW HERE ###################
+    ############# ONLY ADD/MODIFY CODE BELOW HERE ###################
 
-        # --------
-        # move:
-        #
+    # --------
+    # move:
+    #
+    def move(self, motion, tolerance=0.001):
 
-        # copy your code from the previous exercise
-        # and modify it so that it simulates motion noise
-        # according to the noise parameters
-        #           self.steering_noise
-        #           self.distance_noise
+        steering = motion[0]
+        distance = motion[1]
 
-        # --------
-        # sense:
-        #
+        if abs(steering) > max_steering_angle:
+            raise ValueError, "Exceeing max steering angle"
+        if distance < 0.0:
+            raise ValueError, "Moving backwards is not valid"
 
-        # copy your code from the previous exercise
-        # and modify it so that it simulates bearing noise
-        # according to
-        #           self.bearing_noise
+        result = robot()
+        result.length = self.length
+        result.bearing_noise = self.bearing_noise
+        result.steering_noise = self.steering_noise
+        result.distance_noise = self.distance_noise
+
+        steering2 = random.gauss(steering, self.steering_noise)
+        distance2 = random.gauss(distance, self.distance_noise)
+
+        turn = distance2 / result.length * tan(steering2)
+        if abs(turn) > tolerance:
+            radius = distance2 / turn
+            cx = self.x - sin(self.orientation) * radius
+            cy = self.y + cos(self.orientation) * radius
+            result.orientation = (self.orientation + turn) % (2 * pi)
+            result.x = cx + sin(result.orientation) * radius
+            result.y = cy - cos(result.orientation) * radius
+        else:
+            result.orientation = (self.orientation + turn) % (2 * pi)
+            result.x = self.x + distance2 * cos(result.orientation + turn)
+            result.y = self.y + distance2 * sin(result.orientation + turn)
+
+        return result  # make sure your move function returns an instance
+        # of the robot class with the correct coordinates.
+
+    # --------
+    # sense:
+    #
+
+    def sense(self, addNoise=True):
+        Z = []
+        for l in landmarks:
+            bearing = (atan2(l[0] - self.y, l[1] - self.x) % (2 * pi) - self.orientation)
+            if addNoise:
+                bearing += random.gauss(0.0, self.bearing_noise)
+            bearing %= 2 * pi
+            Z.append(bearing)
+        return Z
 
         ############## ONLY ADD/MODIFY CODE ABOVE HERE ####################
 
@@ -287,36 +320,92 @@ def particle_filter(motions, measurements, N=500):  # I know it's tempting, but 
 ## --------
 ## TEST CASES:
 ##
-##1) Calling the particle_filter function with the following
+## 1) The following code should print:
+##       Robot:     [x=0.0 y=0.0 orient=0.0]
+##       Robot:     [x=10.0 y=0.0 orient=0.0]
+##       Robot:     [x=19.861 y=1.4333 orient=0.2886]
+##       Robot:     [x=39.034 y=7.1270 orient=0.2886]
+##
+# length = 20.
+# bearing_noise  = 0.0
+# steering_noise = 0.0
+# distance_noise = 0.0
+#
+# myrobot = robot(length)
+# myrobot.set(0.0, 0.0, 0.0)
+# myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
+#
+# motions = [[0.0, 10.0], [pi / 6.0, 10], [0.0, 20.0]]
+#
+# T = len(motions)
+#
+# print 'Robot:    ', myrobot
+# for t in range(T):
+#    myrobot = myrobot.move(motions[t])
+#    print 'Robot:    ', myrobot
+
+## 2) The following code should print:
+##      Robot:     [x=0.0 y=0.0 orient=0.0]
+##      Robot:     [x=9.9828 y=0.5063 orient=0.1013]
+##      Robot:     [x=19.863 y=2.0201 orient=0.2027]
+##      Robot:     [x=29.539 y=4.5259 orient=0.3040]
+##      Robot:     [x=38.913 y=7.9979 orient=0.4054]
+##      Robot:     [x=47.887 y=12.400 orient=0.5067]
+##      Robot:     [x=56.369 y=17.688 orient=0.6081]
+##      Robot:     [x=64.273 y=23.807 orient=0.7094]
+##      Robot:     [x=71.517 y=30.695 orient=0.8108]
+##      Robot:     [x=78.027 y=38.280 orient=0.9121]
+##      Robot:     [x=83.736 y=46.485 orient=1.0135]
+##
+##
+# length = 20.
+# bearing_noise  = 0.0
+# steering_noise = 0.0
+# distance_noise = 0.0
+#
+# myrobot = robot(length)
+# myrobot.set(0.0, 0.0, 0.0)
+# myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
+#
+# motions = [[0.2, 10.] for row in range(10)]
+#
+# T = len(motions)
+#
+# print 'Robot:    ', myrobot
+# for t in range(T):
+#    myrobot = myrobot.move(motions[t])
+#    print 'Robot:    ', myrobot
+
+##3) Calling the particle_filter function with the following
 ##    motions and measurements should return a [x,y,orientation]
 ##    vector near [x=93.476 y=75.186 orient=5.2664], that is, the
 ##    robot's true location.
 ##
-##motions = [[2. * pi / 10, 20.] for row in range(8)]
-##measurements = [[4.746936, 3.859782, 3.045217, 2.045506],
-##                [3.510067, 2.916300, 2.146394, 1.598332],
-##                [2.972469, 2.407489, 1.588474, 1.611094],
-##                [1.906178, 1.193329, 0.619356, 0.807930],
-##                [1.352825, 0.662233, 0.144927, 0.799090],
-##                [0.856150, 0.214590, 5.651497, 1.062401],
-##                [0.194460, 5.660382, 4.761072, 2.471682],
-##                [5.717342, 4.736780, 3.909599, 2.342536]]
-##
-##print particle_filter(motions, measurements)
+# motions = [[2. * pi / 10, 20.] for row in range(8)]
+# measurements = [[4.746936, 3.859782, 3.045217, 2.045506],
+#                [3.510067, 2.916300, 2.146394, 1.598332],
+#                [2.972469, 2.407489, 1.588474, 1.611094],
+#                [1.906178, 1.193329, 0.619356, 0.807930],
+#                [1.352825, 0.662233, 0.144927, 0.799090],
+#                [0.856150, 0.214590, 5.651497, 1.062401],
+#                [0.194460, 5.660382, 4.761072, 2.471682],
+#                [5.717342, 4.736780, 3.909599, 2.342536]]
+#
+# print particle_filter(motions, measurements)
 
-## 2) You can generate your own test cases by generating
+## 4) You can generate your own test cases by generating
 ##    measurements using the generate_ground_truth function.
 ##    It will print the robot's last location when calling it.
 ##
 ##
-##number_of_iterations = 6
-##motions = [[2. * pi / 20, 12.] for row in range(number_of_iterations)]
-##
-##x = generate_ground_truth(motions)
-##final_robot = x[0]
-##measurements = x[1]
-##estimated_position = particle_filter(motions, measurements)
-##print_measurements(measurements)
-##print 'Ground truth:    ', final_robot
-##print 'Particle filter: ', estimated_position
-##print 'Code check:      ', check_output(final_robot, estimated_position)
+# number_of_iterations = 6
+# motions = [[2. * pi / 20, 12.] for row in range(number_of_iterations)]
+#
+# x = generate_ground_truth(motions)
+# final_robot = x[0]
+# measurements = x[1]
+# estimated_position = particle_filter(motions, measurements)
+# print_measurements(measurements)
+# print 'Ground truth:    ', final_robot
+# print 'Particle filter: ', estimated_position
+# print 'Code check:      ', check_output(final_robot, estimated_position)
