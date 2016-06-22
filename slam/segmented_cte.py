@@ -531,8 +531,8 @@ measurement_noise = 0.3
 
 weight_data = 0.1
 weight_smooth = 0.2
-p_gain = 2.0
-d_gain = 6.0
+p_gain = 2.1
+d_gain = 6.1
 
 print main(grid, init, goal, steering_noise, distance_noise, measurement_noise,
            weight_data, weight_smooth, p_gain, d_gain)
