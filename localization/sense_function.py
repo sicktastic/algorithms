@@ -17,7 +17,6 @@ def sense(p, Z):
         print "----[Zero]----"
         print (0.2 * (0 * 0.6 + (1-0) * 0.2))
         q.append(p[i] * (hit * pHit + (1-hit) * pMiss))
-        # print q
     return q
 
 print sense(p, Z)
