@@ -10,8 +10,15 @@ def sense(p, Z):
         hit = (Z == world[i])
         q.append(p[i] * (hit * pHit + (1-hit) * pMiss))
     s = sum(q)
+
+    print "----- sum of all q to normalize ------"
+    print s
+
     for i in range(len(q)):
         q[i] = q[i] / s
+
+    print "----- normalized q's ------"
+    print q
     return q
 
 print sense(p, Z)
