@@ -122,4 +122,16 @@ for i in range(N):
 # Also, DO NOT MODIFY p.
 
 p3 = []
-p = p3
+
+index = int(random.random() * N)
+beta = 0.0
+mw = max(w)
+
+for i in range(N):
+    beta += random.random() * 2.0 * mw
+    while beta > w[index]:
+        beta -= w[index]
+        index = (index + 1) % N
+    p3.append(p[index])
+
+print p3
