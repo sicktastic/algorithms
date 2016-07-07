@@ -19,6 +19,8 @@ def sense(p, Z):
 
     print "----- normalized q's ------"
     print q
+    one = sum(q)
+    print one
     return q
 
 print sense(p, Z)
