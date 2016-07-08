@@ -25,6 +25,7 @@ sig = 10000.
 # Insert code here
 for n in range(len(measurements)):
     [mu, sig] = update(mu, sig, measurements[n], measurement_sig)
+    print "Update: ", [mu, sig]
     [mu, sig] = predict(mu, sig, motion[n], motion_sig)
+    print "Predict: ", [mu, sig]
 
-print [mu, sig]
