@@ -7,3 +7,5 @@ def navive(a, b):
         x = x - 1
 
     return z
+
+print naive(4, 5)
