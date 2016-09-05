@@ -1,8 +1,7 @@
-import tensorflow as tf
+from sklearn.neural_network import MLPClassifier
 
-x1 = tf.constant(5)
-x2 = tf.constant(6)
+X = [[0., 0.], [1., 1.]]
+y = [0, 1]
 
-result = tf.mul(x1,x2)
-
-print(result)
+clf = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_stat=1)
+clf.fit(X, y)
