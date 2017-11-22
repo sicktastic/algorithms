@@ -1,1 +1,1 @@
-![AI](git@github.com:antwonlee/ai-algorithms.git)
+![AI](https://octodex.github.com/images/megacat-2.png)
